@@ -1,15 +1,9 @@
 import React, { Component } from 'react';
-import './App.css';
+// import classes
+import classes from './App.css';
 // import styled components
 // import styled from 'styled-components';
-import Person from './Person/Person';
-
-// npm run eject
-
-// install Radium
-// npm install --save radium
-// install Styled Components 
-// npm install --save styled-components
+import Person from '../components/Persons/Person/Person';
 
 // const StyledButton = styled.button`
 //   /* ternary expression */
@@ -67,8 +61,9 @@ class App extends Component {
 
 
   render () { 
-
     let persons = null;
+    let btnClass = '';
+    
     if ( this.state.showPersons ) {
       persons = (
         // JSX
@@ -85,23 +80,29 @@ class App extends Component {
           })}
         </div>
       );
-    }
+    btnClass = classes.Red;
+    };
 
-    const classes = [];
+    const assignedClasses = [];
     if(this.state.persons.length <= 2) {
       // push() adds a new item into the array
-      classes.push('red'); // classes = ['red']
+      // reference red class
+      assignedClasses.push(classes.red); // classes = ['red']
     }
     if(this.state.persons.length <= 1) {
-      classes.push('bold'); // classes = ['red', 'bold']
+      // reference bold class
+      assignedClasses.push(classes.bold); // classes = ['red', 'bold']
     }
 
     return (
-      <div className="App">
+      // reference App class
+      <div className={classes.App}>
         <h1>Hi, I'm a React App</h1>
         {/* Join() convert the elements of an array into a string. Display: red bold */}
-        <p className={classes.join(' ')}>This is really working!</p>
-        <button className='button' onClick={this.togglePersonsHandler}>Toggle persons</button> 
+        <p className={assignedClasses.join(' ')}>This is really working!</p>
+        {/* reference Button class */}
+        <button className={btnClass} onClick={this.togglePersonsHandler}>Toggle persons</button>
+        {/* <button className={classes.Button} onClick={this.togglePersonsHandler}>Toggle persons</button>  */}
         {/* <StyledButton alt={this.state.showPersons} onClick={this.togglePersonsHandler}>Toggle persons</StyledButton> */}
         {persons}
       </div>
