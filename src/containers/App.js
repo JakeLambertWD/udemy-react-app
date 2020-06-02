@@ -1,24 +1,9 @@
 import React, { Component } from 'react';
-// import classes
 import classes from './App.css';
-// import styled components
-// import styled from 'styled-components';
-import Person from '../components/Persons/Person/Person';
+import Persons from '../components/Persons/Persons';
+import Cockpit from '../components/Cockpit/Cockpit';
 
-// const StyledButton = styled.button`
-//   /* ternary expression */
-//   background-color: ${props => props.alt ? 'red' : 'green'};
-//   color: white;
-//   font: inherit;
-//   border: 2px solid black;
-//   padding: 8px;
-//   cursor: pointer;
-//   &:hover {
-//     background-color: ${props => props.alt ? 'salmon' : 'lightgreen'};
-//     color: black;
-//   }
-// `;
-
+// class-based component
 class App extends Component {
   state = {
     persons: [
@@ -29,7 +14,6 @@ class App extends Component {
     otherState: 'some other value',
     showPersons: false
   }
-
 
   nameChangedHandler = ( event, id ) => {
     const personIndex = this.state.persons.findIndex(p => {
@@ -46,65 +30,36 @@ class App extends Component {
     this.setState( {persons: persons} );
   }
 
-
   deletePersonsHandler = (personIndex) => {
     const persons = [...this.state.persons];
     persons.splice(personIndex, 1);
     this.setState({persons: persons});
   }
 
-
   togglePersonsHandler = () => {
     const doesShow = this.state.showPersons;
     this.setState({showPersons: !doesShow})
   }
 
-
   render () { 
     let persons = null;
-    let btnClass = '';
     
     if ( this.state.showPersons ) {
-      persons = (
-        // JSX
-        <div>
-          {this.state.persons.map((person, index) => {
-             
-              return <Person 
-              key={person.id}
-              name={person.name} 
-              age={person.age}
-              changed={(event) => this.nameChangedHandler(event, person.id)}
-              click={() => this.deletePersonsHandler(index)}
-              />
-          })}
-        </div>
-      );
-    btnClass = classes.Red;
+      persons = <Persons
+            persons={this.state.persons}
+            clicked={this.deletePersonsHandler}
+            changed={this.nameChangedHandler} />; 
     };
 
-    const assignedClasses = [];
-    if(this.state.persons.length <= 2) {
-      // push() adds a new item into the array
-      // reference red class
-      assignedClasses.push(classes.red); // classes = ['red']
-    }
-    if(this.state.persons.length <= 1) {
-      // reference bold class
-      assignedClasses.push(classes.bold); // classes = ['red', 'bold']
-    }
-
     return (
-      // reference App class
       <div className={classes.App}>
-        <h1>Hi, I'm a React App</h1>
-        {/* Join() convert the elements of an array into a string. Display: red bold */}
-        <p className={assignedClasses.join(' ')}>This is really working!</p>
-        {/* reference Button class */}
-        <button className={btnClass} onClick={this.togglePersonsHandler}>Toggle persons</button>
-        {/* <button className={classes.Button} onClick={this.togglePersonsHandler}>Toggle persons</button>  */}
-        {/* <StyledButton alt={this.state.showPersons} onClick={this.togglePersonsHandler}>Toggle persons</StyledButton> */}
-        {persons}
+        <Cockpit
+          title={this.props.appTitle}
+          persons={this.state.persons}
+          showPersons={this.state.showPersons} 
+          clicked={this.togglePersonsHandler}
+          />
+          {persons}
       </div>
     );
   }
